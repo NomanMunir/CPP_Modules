@@ -1,26 +1,22 @@
 #include "ShrubberyCreationForm.hpp"
-#include <fstream>
 
-ShrubberyCreationForm::ShrubberyCreationForm(const std::string &name): AForm(name, 145, 137) {}
-
-ShrubberyCreationForm::ShrubberyCreationForm(const ShrubberyCreationForm &other): AForm(other) {}
+ShrubberyCreationForm::ShrubberyCreationForm(const std::string& target) : AForm("Shrubbery Creation", 145, 137), _target(target) {}
 
 ShrubberyCreationForm::~ShrubberyCreationForm() {}
 
-ShrubberyCreationForm & ShrubberyCreationForm::operator=(const ShrubberyCreationForm &rhs)
-{
-	(void) rhs;
-	return (*this);
+ShrubberyCreationForm::ShrubberyCreationForm(const ShrubberyCreationForm& other) : AForm(other), _target(other._target) {}
+
+ShrubberyCreationForm& ShrubberyCreationForm::operator=(const ShrubberyCreationForm& rhs) {
+  if (this != &rhs) {
+    AForm::operator=(rhs);
+    _target = rhs._target;
+  }
+  return (*this);
 }
 
-void ShrubberyCreationForm::execute(Bureaucrat const & executor) const
-{
-	if (!this->getIsSigned())
-		throw NotSignedException();
-	else if (executor.getGrade() > this->getExeGrade())
-		throw GradeTooLowException();
-
-	std::ofstream file( (this->getName() + "_shrubbery").c_str() );
+void ShrubberyCreationForm::execute(const Bureaucrat& executor) const {
+  AForm::execute(executor);
+  std::ofstream file( (this->getName() + "_shrubbery").c_str() );
     file << "                      ___" << std::endl;
     file << "                _,-'\"\"   \"\"\"\"`--." << std::endl;
     file << "             ,-'          __,,-- \\" << std::endl;

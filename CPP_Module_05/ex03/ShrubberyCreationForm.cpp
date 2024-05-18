@@ -1,29 +1,27 @@
 #include "ShrubberyCreationForm.hpp"
-#include <fstream>
-#include <ostream>
-ShrubberyCreationForm::ShrubberyCreationForm(const std::string &name): AForm(name, 145, 137) {}
 
-ShrubberyCreationForm::ShrubberyCreationForm(const ShrubberyCreationForm &other): AForm(other) {}
+ShrubberyCreationForm::ShrubberyCreationForm(const std::string& target) : AForm("Shrubbery Creation", 145, 137), _target(target) {}
+
 ShrubberyCreationForm::~ShrubberyCreationForm() {}
-ShrubberyCreationForm & ShrubberyCreationForm::operator=(const ShrubberyCreationForm &rhs)
+
+ShrubberyCreationForm::ShrubberyCreationForm(const ShrubberyCreationForm& other) : AForm(other), _target(other._target) {}
+
+AForm * ShrubberyCreationForm::clone() const
 {
-	(void) rhs;
-	return (*this);
+  return (new ShrubberyCreationForm(*this));
 }
 
-AForm * ShrubberyCreationForm::clone()
-{
-	return (new ShrubberyCreationForm(*this));
+ShrubberyCreationForm& ShrubberyCreationForm::operator=(const ShrubberyCreationForm& rhs) {
+  if (this != &rhs) {
+    AForm::operator=(rhs);
+    _target = rhs._target;
+  }
+  return (*this);
 }
 
-void ShrubberyCreationForm::execute(Bureaucrat const & executor) const
-{
-	if (!this->getIsSigned())
-		throw NotSignedException();
-	else if (executor.getGrade() > this->getExeGrade())
-		throw GradeTooLowException();
-
-	std::ofstream file( (this->getName() + "_shrubbery").c_str() );
+void ShrubberyCreationForm::execute(const Bureaucrat& executor) const {
+  AForm::execute(executor);
+  std::ofstream file( (this->getName() + "_shrubbery").c_str() );
     file << "                      ___" << std::endl;
     file << "                _,-'\"\"   \"\"\"\"`--." << std::endl;
     file << "             ,-'          __,,-- \\" << std::endl;
@@ -46,8 +44,7 @@ void ShrubberyCreationForm::execute(Bureaucrat const & executor) const
     file << "                  dHHHb" << std::endl;
     file << "                .dFd|bHb.               o" << std::endl;
     file << "      o       .dHFdH|HbTHb.          o /" << std::endl;
-    file << "\\  Y  |  \\__,dHHFdHH|HHhoHHb.__Krogg  Y" << std::endl;
+    file << "\\  Y  |  \\__,dHHFdHH|HHhoHHb.__Nomi  Y" << std::endl;
     file << "##########################################" << std::endl;
     file.close();
-	
 }

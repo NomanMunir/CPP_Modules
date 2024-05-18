@@ -1,52 +1,60 @@
 #include "AForm.hpp"
 
-AForm::AForm() : _name("unknown"), _isSigned(false), _signGrade(0), _exeGrade(0) {}
+AForm::AForm(const std::string name, const int grade, const int exeGrade)
+: _name(name),
+  _formSignature(false),
+  _grade(grade),
+  _exeGrade(exeGrade)
+{
+    if (grade < 1 || exeGrade < 1)
+      throw GradeTooHighException();
+  else if (grade > 150 || exeGrade > 150)
+      throw GradeTooLowException();
+}
 
-AForm::AForm(const std::string &name, int grade, int exeGrade) : _name(name), _isSigned(false), _signGrade(grade), _exeGrade(exeGrade) {}
+AForm::AForm(const AForm& other)
+: _name(other._name),
+  _formSignature(other._formSignature),
+  _grade(other._grade),
+  _exeGrade(other._exeGrade) {}
 
-AForm::AForm(const AForm &other): _name(other._name), _isSigned(other._isSigned), _signGrade(other._signGrade), _exeGrade(other._exeGrade) {}
+AForm& AForm::operator=(const AForm& rhs)
+{
+  _formSignature = rhs._formSignature;
+  return (*this);
+}
 
 AForm::~AForm() {}
 
-AForm &AForm::operator=(const AForm &rhs)
+std::string AForm::getName() const { return (_name); }
+
+int AForm::getGrade() const { return (_grade); }
+
+int AForm::getExeGrade() const { return (_exeGrade); }
+
+bool AForm::getFormSignature() const { return (_formSignature); }
+
+void AForm::beSigned(const Bureaucrat& b)
 {
-	if (this != &rhs)
-	{
-		this->_isSigned = rhs._isSigned;
-	}
-	return (*this);
+  if (b.getGrade() > this->getGrade())
+    throw GradeTooLowException();
+  this->_formSignature = true;
 }
 
-std::string AForm::getName() const
+void AForm::execute(const Bureaucrat& executor) const
 {
-	return (this->_name);
+  if (!this->getFormSignature())
+    throw NotSignedException();
+  if (executor.getGrade() > this->getExeGrade())
+    throw GradeTooLowException();
+  std::cout << "Form " << this->getName() << " is executed by " << executor.getName() << std::endl;
 }
 
-bool AForm::getIsSigned() const
+std::ostream& operator<<(std::ostream& o, const AForm& form)
 {
-	return (this->_isSigned);
-}
-
-int AForm::getSignGrade() const
-{
-	return (this->_signGrade);
-}
-
-int AForm::getExeGrade() const
-{
-	return (this->_exeGrade);
-}
-
-void AForm::beSigned(Bureaucrat& bur)
-{
-	if (bur.getGrade() > this->_signGrade)
-		throw GradeTooLowException();
-	this->_isSigned = true;
-}
-
-std::ostream& operator<<( std::ostream& o, const AForm& rhs ) {
-    o << "AForm Name: " << rhs.getName() << std::endl;
-	o << "AForm Grade: " << rhs.getSignGrade() << std::endl;
-	o << "AForm Signed: " << rhs.getIsSigned() << std::endl;
-    return o;
+  o << "Name: " << form.getName() << std::endl;
+  o << "Grade: " << form.getGrade() << std::endl;
+  o << "Execution Grade: " << form.getExeGrade() << std::endl;
+  o << "Is Form Signed: " << form.getFormSignature();
+  return (o);
 }

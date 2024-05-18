@@ -16,7 +16,7 @@ CXXFLAGS = -std=c++98 -Wall -Wextra -Werror
 SRCS = main.cpp Bureaucrat.cpp Form.cpp \
 
 OBJS = $(SRCS:.cpp=.o)
-TARGET = FormUp
+TARGET = bureaucrat
 
 all: $(TARGET)
 

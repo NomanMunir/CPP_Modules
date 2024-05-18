@@ -2,17 +2,22 @@
 #define SHRUBBERYCREATIONFORM_HPP
 
 #include "AForm.hpp"
+#include <fstream>
 
-class ShrubberyCreationForm : public AForm
+class ShrubberyCreationForm : public AForm 
 {
-	ShrubberyCreationForm();
-  public:
-	ShrubberyCreationForm(const std::string &name);
-	ShrubberyCreationForm(const ShrubberyCreationForm &other);
-	~ShrubberyCreationForm();
-	ShrubberyCreationForm &operator=(const ShrubberyCreationForm &rhs);
-	AForm * clone();
-	void execute(Bureaucrat const & executor) const;
+public:
+  ShrubberyCreationForm(const std::string& target);
+  ShrubberyCreationForm(const ShrubberyCreationForm& other);
+  ShrubberyCreationForm& operator=(const ShrubberyCreationForm& other);
+  virtual ~ShrubberyCreationForm();
+  AForm * clone() const;
+
+  virtual void execute(const Bureaucrat& executor) const;
+
+private:
+  ShrubberyCreationForm();
+  std::string _target;
 };
 
-#endif // !SHRUBBERYCREATIONFORM_HPP
+#endif

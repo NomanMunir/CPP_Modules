@@ -1,30 +1,29 @@
 #include "RobotomyRequestForm.hpp"
 
-RobotomyRequestForm::RobotomyRequestForm(const std::string &name): AForm(name, 72, 45) {}
+RobotomyRequestForm::RobotomyRequestForm(const std::string& target) : AForm("Robotomy Request", 72, 45), _target(target) {}
 
-RobotomyRequestForm::RobotomyRequestForm(const RobotomyRequestForm &other): AForm(other) {}
 RobotomyRequestForm::~RobotomyRequestForm() {}
-RobotomyRequestForm & RobotomyRequestForm::operator=(const RobotomyRequestForm &rhs)
-{
-	(void) rhs;
-	return (*this);
+
+RobotomyRequestForm::RobotomyRequestForm(const RobotomyRequestForm& other) : AForm(other), _target(other._target) {}
+
+RobotomyRequestForm& RobotomyRequestForm::operator=(const RobotomyRequestForm& other) {
+  if (this != &other) {
+    AForm::operator=(other);
+    _target = other._target;
+  }
+  return *this;
 }
 
-AForm * RobotomyRequestForm::clone()
-{
-	return (new RobotomyRequestForm(*this));
+AForm * RobotomyRequestForm::clone() const {
+  return new RobotomyRequestForm(*this);
 }
 
-void RobotomyRequestForm::execute(Bureaucrat const & executor) const
-{
-	static int i;
-	if (!this->getIsSigned())
-		throw NotSignedException();
-	else if (executor.getGrade() > this->getExeGrade())
-		throw GradeTooLowException();
-	if (i % 2 == 0)
-		 std::cout << "BZZZZZT! " << this->getName() << " has been robotomized!" << std::endl;
-	else
-		std::cout << "Robotomy failed! " << this->getName() << std::endl;
-	i++;
+void RobotomyRequestForm::execute(const Bureaucrat& executor) const {
+  AForm::execute(executor);
+  std::cout << "* Makes some drilling noises *" << std::endl;
+  if (rand() % 2 == 0) {
+    std::cout << _target << " has been robotomized successfully!" << std::endl;
+  } else {
+    std::cout << "Robotomy failed for " << _target << std::endl;
+  }
 }

@@ -3,16 +3,19 @@
 
 #include "AForm.hpp"
 
-class PresidentialPardonForm : public AForm
-{
-	PresidentialPardonForm();
-  public:
-	PresidentialPardonForm(const std::string &name);
-	PresidentialPardonForm(const PresidentialPardonForm &other);
-	~PresidentialPardonForm();
-	PresidentialPardonForm &operator=(const PresidentialPardonForm &rhs);
+class PresidentialPardonForm : public AForm {
+public:
+  PresidentialPardonForm();
+  PresidentialPardonForm(const std::string& target);
+  PresidentialPardonForm(const PresidentialPardonForm& other);
+  ~PresidentialPardonForm();
 
-	void execute(Bureaucrat const & executor) const;
+  PresidentialPardonForm& operator=(const PresidentialPardonForm& other);
+
+  void execute(const Bureaucrat& executor) const;
+
+private:
+  std::string _target;
 };
 
-#endif // !PRESIDENTIALPARDONFORM_HPP
+#endif // PRESIDENTIALPARDONFORM_HPP

@@ -1,20 +1,19 @@
 #include "PresidentialPardonForm.hpp"
 
-PresidentialPardonForm::PresidentialPardonForm(const std::string &name): AForm(name, 25, 5) {}
+PresidentialPardonForm::PresidentialPardonForm(const std::string& target) : AForm("Presidential Pardon Form", 25, 5), _target(target) {}
 
-PresidentialPardonForm::PresidentialPardonForm(const PresidentialPardonForm &other): AForm(other) {}
 PresidentialPardonForm::~PresidentialPardonForm() {}
-PresidentialPardonForm & PresidentialPardonForm::operator=(const PresidentialPardonForm &rhs)
-{
-	(void) rhs;
-	return (*this);
-}
 
-void PresidentialPardonForm::execute(Bureaucrat const & executor) const
-{
-	if (!this->getIsSigned())
-		throw NotSignedException();
-	else if (executor.getGrade() > this->getExeGrade())
-		throw GradeTooLowException();
-	std::cout << this->getName() << " has been pardoned by Zaphod Beeblebrox" << std::endl;
+void PresidentialPardonForm::execute(Bureaucrat const &executor) const {
+  if (!this->getFormSignature()) {
+    std::cout << "Form is not signed, cannot be executed." << std::endl;
+    return;
+  }
+
+  if (executor.getGrade() > this->getExeGrade()) {
+    std::cout << "Bureaucrat has insufficient grade to execute the form." << std::endl;
+    return;
+  }
+
+  std::cout << this->_target << " has been pardoned by Zaphod Beeblebrox." << std::endl;
 }

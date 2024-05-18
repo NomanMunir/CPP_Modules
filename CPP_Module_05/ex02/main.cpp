@@ -1,30 +1,31 @@
 #include "Bureaucrat.hpp"
 #include "AForm.hpp"
 #include "ShrubberyCreationForm.hpp"
-#include "RobotomyRequestForm.hpp"
 #include "PresidentialPardonForm.hpp"
+#include "RobotomyRequestForm.hpp"
 
-int main( void )
+int main()
 {
-    try {
-        Bureaucrat bureaucrat("Pikachu", 1);
-        ShrubberyCreationForm shrb = ShrubberyCreationForm("bus form");
-        RobotomyRequestForm roboto = RobotomyRequestForm("robotio");
-        RobotomyRequestForm roboto2 = RobotomyRequestForm("robotio");
-        PresidentialPardonForm pres = PresidentialPardonForm("pres");
+   try {
+        Bureaucrat b("Noman", 1);
+        ShrubberyCreationForm Sform("Shrubbery");
+        RobotomyRequestForm Rform("Robotomy");
+        PresidentialPardonForm Pform("President");
 
-        bureaucrat.signForm(shrb);
-        bureaucrat.executeForm(shrb);
-        bureaucrat.signForm(roboto);
-        bureaucrat.executeForm(roboto);
-
-        bureaucrat.signForm(roboto2);
-        bureaucrat.executeForm(roboto2);
-
-        bureaucrat.signForm(pres);
-        bureaucrat.executeForm(pres);
+        std::cout << "\n--------------- ( Shrubbery Form) ---------------" << std::endl;
+        b.signForm(Sform);
+        b.executeForm(Sform);
+        std::cout << "\n--------------- ( Robotomy Form) ---------------" << std::endl;
+        b.signForm(Rform);
+        b.executeForm(Rform);
+        b.executeForm(Rform);
+        b.executeForm(Rform);
+        b.executeForm(Rform);
+        std::cout << "\n--------------- ( President Form) ---------------" << std::endl;
+        b.signForm(Pform);
+        b.executeForm(Pform);
     } catch (std::exception &e) {
         std::cout << e.what() << std::endl;
     }
-    return 0;
+    return (0);
 }
